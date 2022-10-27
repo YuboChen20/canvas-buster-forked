@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Canvas. Ejemplos del método drawImage</title>
+  </head>
+  <body>
+    <canvas id="lienzo" width="800" height="500"></canvas>
+    <script>
+      var lienzo = document.getElementById("lienzo");
+      var context = lienzo.getContext("2d");
+      var logo = new Image();
+      logo.src = "imagenes/tiles.png";
+
+      function cargar (x,y) {
+        context.strokeRect(x, y, 16, 16);
+        context.drawImage(logo,x,y,16,16,600,0,32,32)
+      }
+      //cuando se carga la imagen, lo dibujaremos en e lienzo (no antes)
+      logo.onload = function () {
+        // 3 parametros (qué, dónde colocar)
+        let x = 0
+        let y = 0
+        let move =""
+        context.drawImage(logo, 0, 0);
+        context.lineWidth = 5;
+        cargar(x,y);
+
+        
+        document.addEventListener("keydown", e => { 
+          e.preventDefault();
+          move = e.key;
+          context.clearRect(0,0,1000,500)
+          context.drawImage(logo,0,0,528,448,0,0,528,448)
+          if (move=="ArrowUp") {
+             y=y-16
+             if(y < 0) y = 27*16;
+          }
+          else if (move=="ArrowDown") {
+            
+             y=y+16
+             if(y > 27*16) y = 0;
+          }
+          else if (move=="ArrowRight") {
+             x=x+16;
+             if(x > 32*16) x = 0;
+          }
+          else if (move=="ArrowLeft") {
+             x=x-16
+             if(x < 0) x = 32*16;
+          }
+          cargar(x,y)
+        
+        })
+
+      };
+    </script>
+  </body>
+</html>
